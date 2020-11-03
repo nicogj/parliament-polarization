@@ -57,6 +57,7 @@ def cleaning_vote_outcomes(df, country_code):
         df['name'] = df['name'].str.replace(u'\xa0', ' ')
         df['name'] = df['name'].str.strip()
 
+        df['party'] = df['party'].str.strip()
         df = pd.merge(df, fr_party_df, how='left', on='party')
 
     # Replace by Numbers

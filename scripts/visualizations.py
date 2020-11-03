@@ -1,9 +1,14 @@
+# python3 scripts/visualizations.py fr assemblee 15
+
 import matplotlib.pyplot as plt
 import plotly.io as pio
 import argparse
 import pandas as pd
+import chart_studio
+import chart_studio.plotly as py
+chart_studio.tools.set_credentials_file(username='nicogj', api_key='DkQKByIZRu5QoLqq7TUe')
 
-from utils.dim_reduction import pca_plot
+from utils.plotting import dim_reduc_plot
 
 if __name__ == '__main__':
 
@@ -15,12 +20,18 @@ if __name__ == '__main__':
 
     print("Plotting {} {} {}".format(args.country_code.upper(), args.chamber, args.legislature_num))
 
-    pca_df = pd.read_csv('data/votes_{}_{}_{}_pca.tsv'.format(args.country_code, args.chamber, args.legislature_num), sep='\t')
+    dim_reduc_df = pd.read_csv('data/votes_{}_{}_{}_pca.tsv'.format(args.country_code, args.chamber, args.legislature_num), sep='\t')
 
-    fig = pca_plot(pca_df, type='static')
+    fig = dim_reduc_plot(dim_reduc_df, args, type='static')
     plt.savefig('output/votes_{}_{}_{}_pca.png'.format(args.country_code, args.chamber, args.legislature_num), bbox_inches='tight')
 
-    fig = pca_plot(pca_df, type='plotly')
-    pio.write_html(fig, file='output/votes_{}_{}_{}_pca.html'.format(args.country_code, args.chamber, args.legislature_num), auto_open=False)
-
+    fig = dim_reduc_plot(dim_reduc_df, args, type='plotly')
+    py.plot(fig, filename='votes_{}_{}_{}_pca'.format(args.country_code, args.chamber, args.legislature_num), auto_open=False)
+    pio.write_html(
+        fig, file='output/votes_{}_{}_{}_pca.html'.format(args.country_code, args.chamber, args.legislature_num),
+        auto_open=False,
+        config={
+            'modeBarButtonsToRemove': ['lasso2d', 'resetScale2d', 'toggleSpikelines','hoverCompareCartesian', 'hoverClosestCartesian']
+        }
+    )
     print("Done !")
