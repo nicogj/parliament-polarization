@@ -29,12 +29,17 @@ def dim_reduc_plot(df, args, type='plotly', display_names=False):
     color_dict['Independent'] = 'green'
 
     ids = {}
-    ids['us_senate_116'] = [
-        18, 25, 31, 37, 47, 51, 57, 58, 66, 70, 73, 77, 80
+    names = [
+        'Cruz', 'Paul', 'Lee', 'Collins', 'McConnell', 
+        'Manchin', 'Wyden', 'Schumer', 'Klobuchar', 'Markey', 'Warren', 'Harris'
     ]
-    if run_name not in ids:
-        ids[run_name] = []
-    df['display_name'] = [name if id in ids[run_name] else "" for name, id in zip(df['name'], df['id'])]
+    df['display_name'] = [name if name in names else "" for name in df['name']]
+    # ids['us_senate_116'] = [
+    #     18, 25, 31, 37, 47, 51, 57, 58, 66, 70, 73, 77, 80
+    # ]
+    # if run_name not in ids:
+    #     ids[run_name] = []
+    # df['display_name'] = [name if id in ids[run_name] else "" for name, id in zip(df['name'], df['id'])]
 
     if type == 'static':
         # Matplotlib version
